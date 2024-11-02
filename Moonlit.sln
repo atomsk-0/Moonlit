@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{42039EAD-D216-45F5-8E75-36A96491FAE3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B31FD65F-AB9E-4033-BE81-A628320CC2D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moonlit", "src\Moonlit\Moonlit.csproj", "{F4135ECF-ECF0-49CF-A4E8-05F2AD269146}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moonlit.Lab", "tests\Moonlit.Lab\Moonlit.Lab.csproj", "{868AEB66-4695-42F6-A467-238F306758B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moonlit.Gui", "src\Moonlit.Gui\Moonlit.Gui.csproj", "{E8B70FDE-19D6-4E79-BA95-50957003E406}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F4135ECF-ECF0-49CF-A4E8-05F2AD269146} = {42039EAD-D216-45F5-8E75-36A96491FAE3}
+		{868AEB66-4695-42F6-A467-238F306758B4} = {B31FD65F-AB9E-4033-BE81-A628320CC2D3}
+		{E8B70FDE-19D6-4E79-BA95-50957003E406} = {42039EAD-D216-45F5-8E75-36A96491FAE3}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F4135ECF-ECF0-49CF-A4E8-05F2AD269146}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4135ECF-ECF0-49CF-A4E8-05F2AD269146}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4135ECF-ECF0-49CF-A4E8-05F2AD269146}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4135ECF-ECF0-49CF-A4E8-05F2AD269146}.Release|Any CPU.Build.0 = Release|Any CPU
+		{868AEB66-4695-42F6-A467-238F306758B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{868AEB66-4695-42F6-A467-238F306758B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{868AEB66-4695-42F6-A467-238F306758B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{868AEB66-4695-42F6-A467-238F306758B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8B70FDE-19D6-4E79-BA95-50957003E406}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8B70FDE-19D6-4E79-BA95-50957003E406}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8B70FDE-19D6-4E79-BA95-50957003E406}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8B70FDE-19D6-4E79-BA95-50957003E406}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

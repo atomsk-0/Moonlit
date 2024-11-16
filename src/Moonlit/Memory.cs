@@ -21,4 +21,13 @@ public static unsafe class Memory
 
         return bytes;
     }
+
+    /// <summary>
+    /// Reset memory addresses
+    /// </summary>
+    public static void Reset()
+    {
+        BaseAddress = null;
+        EndAddress = null;
+    }
 }

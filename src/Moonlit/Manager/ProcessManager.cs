@@ -16,19 +16,22 @@ public static unsafe class ProcessManager
     /// <returns>true if successful</returns>
     public static bool Open(string name)
     {
-        CurrentProcess?.Dispose();
         var processes = Process.GetProcessesByName(name);
-        if (processes.Length == 0) return false;
-        CurrentProcess = processes[0];
-        return true;
+        return processes.Length != 0 && Open(processes[0].Id);
     }
 
     public static bool Open(int id)
     {
         CurrentProcess?.Dispose();
+        Memory.Reset();
         try
         {
             CurrentProcess = Process.GetProcessById(id);
+            var mainModule = CurrentProcess.MainModule;
+            if (mainModule == null) return false;
+            // Set memory addresses
+            Memory.BaseAddress = (byte*)mainModule.BaseAddress;
+            Memory.EndAddress = Memory.BaseAddress + mainModule.ModuleMemorySize;
             return true;
         }
         catch (ArgumentException)

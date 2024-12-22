@@ -7,6 +7,7 @@ namespace Moonlit;
 public static unsafe class Memory
 {
     private const char wildcard = '?';
+    private const int max_stackalloc = 1024;
 
     public static byte* BaseAddress;
     public static byte* EndAddress;
@@ -53,6 +54,7 @@ public static unsafe class Memory
         return bytes;
     }
 
+
     /// <summary>
     /// Finds a pattern in a specified memory range.
     /// </summary>
@@ -72,8 +74,16 @@ public static unsafe class Memory
         int length = fixedLength;
 
         List<nuint> patternBytes = new List<nuint>();
-
-        byte* buffer = NativeMemory.Alloc<byte>(chunkSize);
+        byte* buffer;
+        if (chunkSize <= max_stackalloc)
+        {
+            byte* stackBuffer = stackalloc byte[chunkSize];
+            buffer = stackBuffer;
+        }
+        else
+        {
+            buffer = NativeMemory.Alloc<byte>(chunkSize);
+        }
 
         for (byte* i = rangeStart; i <= rangeEnd - length; i += chunkSize)
         {
@@ -96,10 +106,13 @@ public static unsafe class Memory
             });
         }
 
-        NativeMemory.Free(buffer);
+        if (chunkSize > max_stackalloc)
+        {
+            NativeMemory.Free(buffer);
+        }
         NativeMemory.Free(bytes);
 
-        outLength = patternBytes.Count;
+       outLength = patternBytes.Count;
 
         if (patternBytes.Count > 0)
         {

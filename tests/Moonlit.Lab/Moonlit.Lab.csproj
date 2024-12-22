@@ -7,6 +7,22 @@
         <Nullable>enable</Nullable>
         <LangVersion>13</LangVersion>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <PublishAot>true</PublishAot>
+
+        <!--Analyzers-->
+        <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+        <EnableSingleFileAnalyzer>true</EnableSingleFileAnalyzer>
+        <EnableAotAnalyzer>true</EnableAotAnalyzer>
+        <IsAotCompatible>true</IsAotCompatible>
+
+        <!-- Optimizations -->
+        <OptimizationPreference>Speed</OptimizationPreference>
+        <Optimize>true</Optimize>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+        <IlcEnableInlining>true</IlcEnableInlining>
+        <IlcFoldIdenticalMethodBodies>true</IlcFoldIdenticalMethodBodies>
+        <IlcInstructionSet>native</IlcInstructionSet>
     </PropertyGroup>
 
     <ItemGroup>

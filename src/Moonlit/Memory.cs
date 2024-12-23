@@ -13,12 +13,12 @@ public static unsafe class Memory
     public static byte* EndAddress;
 
     /// <summary>
-    /// Converts a string to a byte array
+    /// Converts a hex string to a byte array
     /// </summary>
     /// <param name="str"></param>
     /// <param name="length"></param>
     /// <returns>pointer to heap allocated byte array. Free it after usage</returns>
-    public static byte* StringToBytes(string str, int* length)
+    public static byte* HexStringToBytes(string str, int* length)
     {
         str = str.Replace(" ", ""); // Remove spaces
         *length = str.Length / 2;
@@ -29,6 +29,27 @@ public static unsafe class Memory
             bytes[i] = Convert.ToByte(hexPair, 16);
         }
 
+        return bytes;
+    }
+
+    /// <summary>
+    /// Converts a string to a byte array.
+    /// </summary>
+    /// <param name="str">The input string to convert.</param>
+    /// <param name="length">Pointer to an integer that will store the length of the resulting byte array.</param>
+    /// <returns>
+    /// A pointer to a heap-allocated byte array representing the input string.
+    /// The caller is responsible for freeing the allocated memory after use.
+    /// </returns>
+    public static byte* StringToBytes(string str, int* length)
+    {
+        byte* bytes = NativeMemory.Alloc<byte>((nuint)str.Length);
+        for (int i = 0; i < str.Length; i++)
+        {
+            bytes[i] = (byte)str[i];
+        }
+
+        *length = str.Length;
         return bytes;
     }
 
@@ -125,6 +146,57 @@ public static unsafe class Memory
             return result;
         }
 
+        return null;
+    }
+
+    /// <summary>
+    /// Finds the specified text within a given memory range.
+    /// </summary>
+    /// <param name="text">The text to search for.</param>
+    /// <param name="rangeStart">The starting address of the memory range to search.</param>
+    /// <param name="rangeEnd">The ending address of the memory range to search.</param>
+    /// <returns>
+    /// A pointer to the start of the found text within the memory range, or null if the text is not found.
+    /// </returns>
+    public static byte* FindText(string text, byte* rangeStart, byte* rangeEnd)
+    {
+        int fixedLength;
+        byte* bytes = StringToBytes(text, &fixedLength);
+        int length = fixedLength;
+
+        const int chunk_size = 8192; // 8KB - maybe change this as parameter in the function
+        byte* buffer = NativeMemory.Alloc<byte>(chunk_size);
+
+        for (byte* i = rangeStart; i <= rangeEnd - length; i += chunk_size)
+        {
+            nuint bytesRead = 0;
+            if (OperatingSystem.IsWindows())
+            {
+                Kernel32.ReadProcessMemory(ProcessManager.CurrentProcess!.Handle, i, buffer, chunk_size, &bytesRead);
+            }
+
+            if (bytesRead == 0) break;
+
+            bool found = false;
+            Parallel.For(0, (int)bytesRead - length, (offset, state) =>
+            {
+                if (NativeMemory.MemCmp(buffer + offset, bytes, length) == 0)
+                {
+                    found = true;
+                    state.Stop();
+                }
+            });
+
+            if (found)
+            {
+                NativeMemory.Free(bytes);
+                NativeMemory.Free(buffer);
+                return i;
+            }
+        }
+
+        NativeMemory.Free(bytes);
+        NativeMemory.Free(buffer);
         return null;
     }
 
